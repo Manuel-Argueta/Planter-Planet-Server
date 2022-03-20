@@ -36,25 +36,32 @@ app.get('/', (req,res)=> {
         });
 });
 
-
 app.post('/create-user', (req,res) => {
-    console.log("req made")
     const incomingData = req.body;
-    const newUser= new User(incomingData);
-    newUser.save((err,doc) => {
-    if (err) {
-        res.status(500).send({
-            err: err,
-            message: "Server Error Occured"
-        });
-    } 
-        res.status(200).send({
-        message: 'User Created!',
-        document: doc
-        });
-    });
-});
+    const newUser = new User(incomingData);
+    User.find(incomingData, (err, doc) =>{
+        console.log(err)
+        if (doc) {
+            return res.status(200).send({
+                message: "User Already Exists!",
+                create: false
+            })
+        }
 
+        newUser.save((err,doc) => {
+            if (err) {
+                res.status(500).send({
+                    err: err,
+                    message: "Server Error Occured"
+                });
+            } 
+                res.status(200).send({
+                message: 'User Created!',
+                create: true
+                });
+        });
+    })
+});
 
 //Add auth
 app.get('/get-key', (req,res)=> {
