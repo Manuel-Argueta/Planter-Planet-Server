@@ -42,7 +42,7 @@ app.post('/create-user', (req,res) => {
     User.find(incomingData, (err, doc) =>{
         console.log(err)
         if (doc) {
-            return res.status(200).send({
+            return res.status(500).send({
                 message: "User Already Exists!",
                 create: false
             })
