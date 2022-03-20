@@ -41,7 +41,7 @@ app.post('/create-user', (req,res) => {
     const newUser = new User(incomingData);
     User.findOne({username: incomingData.username}, (err, doc) =>{
         if (doc) {
-            return res.status(500).send({
+            return res.status(200).send({
                 message: "User Already Exists!",
                 create: false
             })
